@@ -1,36 +1,24 @@
-import React from 'react';
-import AddUser from './Components/AddUser'
-import DisplayUser from './Components/DisplayUser';
-import ErrorBox from './Components/ErrorBox';
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+import AddUser from './components/Users/AddUser';
+import UsersList from './components/Users/UsersList';
 
 function App() {
-  let [users, setUsers] = useState([]);
-  let [errorStatus, setErrorStatus] = useState(false);
-  let [errorMessage, setErrorMessage] = useState("");
+  const [usersList, setUsersList] = useState([]);
 
-  const onAddUserHandler = (name, age) => {
-    setUsers((prev) => {
-      return [...prev, { id: Math.random(), name, age }];
-    })
-    setErrorMessage("");
-    setErrorStatus(false);
-  }
+  const addUserHandler = (uName, uAge) => {
+    setUsersList((prevUsersList) => {
+      return [
+        ...prevUsersList,
+        { name: uName, age: uAge, id: Math.random().toString() },
+      ];
+    });
+  };
 
-  const onErrorHandler = (status,message) => {
-    setErrorStatus(status);
-    setErrorMessage(message);
-  }
- 
-  const hideErrorBox = () => {
-    setErrorStatus(false);
-  }
-  console.log(errorStatus);
   return (
     <div>
-      <AddUser onAddUser={onAddUserHandler} onError={onErrorHandler}/>
-      <DisplayUser users={users} />
-      {errorStatus && <ErrorBox errorData={{errorMessage}} hideErrorBox = {hideErrorBox}/>}
+      <AddUser onAddUser={addUserHandler} />
+      <UsersList users={usersList} />
     </div>
   );
 }
